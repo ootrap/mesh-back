@@ -14,7 +14,8 @@ class WechatController extends Controller
        Log::info('请求收到');
 
        $wechat = app('wechat');
-       $user = $wechat->get($openId);
+       $userService = $wechat->user;
+       $user = $userService->get($openId);
        $wechat->server->setMessageHandler(function($message){
           return '欢迎关注,'.$user['nickname'];
        });
