@@ -1,5 +1,9 @@
 <?php
 
+header('Access-Control-Allow-Origin: *');
+
+header('Access-Control-Allow-Headers: Authorization, Content-Type');
+
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -10,8 +14,30 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+// Common
+// 
+// Route::group(['prefix'=>'wechat','middleware'=>['web','wechat.oauth']],function(){
 
-Route::any('/wechat', 'WechatController@serve');
+//   Route::get('/','WechatController@index');
+//   Route::any('/serve', 'WechatController@serve');
+//   Route::get('/callback','WechatController@callback');
+
+// });
+// 
+//第三方平台
+// Route::get('/', 'WechatController@index');
+// Route::get('/callback', 'WechatController@callback');
+// Route::post('/auth', 'WechatController@auth');
+
+// 本地测试用
+
+Route::group(['middleware' => ['api'],'prefix' => 'api'], function () {
+    Route::post('register', 'APIController@register');
+    Route::post('login', 'APIController@login');
+    Route::group(['middleware' => 'jwt-auth'], function () {
+        Route::post('getUserDetails', 'APIController@getUserDetails');
+    });
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +49,3 @@ Route::any('/wechat', 'WechatController@serve');
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
-Route::group(['middleware' => ['web']], function () {
-    //
-});
