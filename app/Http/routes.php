@@ -1,9 +1,4 @@
 <?php
-
-header('Access-Control-Allow-Origin: *');
-
-header('Access-Control-Allow-Headers: Authorization, Content-Type');
-
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -31,21 +26,15 @@ header('Access-Control-Allow-Headers: Authorization, Content-Type');
 
 // 本地测试用
 
-Route::group(['middleware' => ['api'],'prefix' => 'api'], function () {
-    Route::post('register', 'APIController@register');
-    Route::post('login', 'APIController@login');
-    Route::group(['middleware' => 'jwt-auth'], function () {
-        Route::post('getUserDetails', 'APIController@getUserDetails');
-    });
-});
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Authorization, Content-Type');
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
+Route::get('xx', 'AuthController@xx');
+
+Route::group(['prefix' => 'api'], function () {
+    Route::post('register', 'AuthController@create');
+    Route::post('login', 'AuthController@authenticateLogin');
+    Route::post('forget', 'AuthController@findPassword');
+    Route::post('sendSms', 'AuthController@sendSms');
+    Route::get('getUsers', 'AuthController@test');
+});
