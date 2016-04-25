@@ -10,35 +10,11 @@ use Star\sms\BaseFireSms;
 class BechSmsProxy extends BaseFireSms
 {
 
-    protected $url;//API url地址
-    protected $params; //参数集
-    protected $content; //发送的内容
-    protected $to; //要发送的手机号码
-
-    public function __construct($to, $content)
-    {
-        $this->to = $to;
-        $this->content = $content;
-        $this->url = \Config::get('sms.Settings.url');
-        $this->makeParams();
-        parent::__construct($this->url, $this->params);
-    }
-
     /**
-     * 根据实际情况，覆盖基类的fire方法，输出更加人性化的返回值
-     * @return [json] [description]
-     */
-    public function fire()
-    {
-        $response = parent::fire();
-        return $this->formatResponse($response);
-    }
-
-    /**
-     * 拼接Bech代理的指定格式参数
+     * 抽象方法实现，生成特定的HTTP参数
      * 
      */
-    protected function makeParams()
+    public function makeParams()
     {
         $params = [
           'accesskey' => \Config::get('sms.Settings.akey'),
@@ -46,11 +22,12 @@ class BechSmsProxy extends BaseFireSms
           'mobile' => $this->to,
           'content' => $this->content
         ];
-        $this->params = $params;
+
+        return $this->params = $params;
     }
 
     /**
-     * 格式化输出
+     * 抽象方法实现，格式化输出
      */
     protected function formatResponse($response)
     {

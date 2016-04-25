@@ -5,29 +5,30 @@ use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * 短信发送抽象类，同时实现接口
+ * 短信发送类
+ * 需要传入:
+ * 1.手机号码
+ * 2.短信内容
  */
-abstract class BaseFireSms implements InterfaceFireSms
+abstract class BaseFireSms
 {
-    /**
-     * [$url 短信代理商的API URL地址]
-     * @var [string]
-     */
-    protected $url;
+
+    protected $url; //[$url 短信代理商的API URL地址
+    protected $params; //通常由各类key组成，作为Guzzle的params参数数组发送HTTP请求
+    protected $content; //短信内容
+    protected $to; //手机号码
 
     /**
-     * [$params 参数集合，通常由各类key组成，作为Guzzle的params参数数组发送HTTP请求]
-     * @var [array]
+     * 调用该类需要传入手机号码和短信内容
+     * @param [string] $to      [目标手机号码]
+     * @param [string] $content [发送给API的参数]
      */
-    protected $params;
-
-    /**
-     * 实例化该类需要传入$url和参数
-     */
-    public function __construct($url, array $params)
+    public function __construct($to, $content)
     {
-        $this->params = $params;
-        $this->url = $url;
+        $this->to = $to;
+        $this->url = \Config::get('sms.Settings.url');
+        $this->content = urlencode($content);
+        $this->params = $this->makeParams();
     }
 
     /**
@@ -39,7 +40,8 @@ abstract class BaseFireSms implements InterfaceFireSms
     {
         $client = new Client();
         $response = $client->get($this->url, ['query' => $this->params]);
-        return $this->getResponse($response);
+        $result = $this->getResponse($response);
+        return $this->formatResponse($result);
     }
 
     /**
@@ -58,4 +60,13 @@ abstract class BaseFireSms implements InterfaceFireSms
           ];
         return $result;
     }
+
+    /**
+     * 每个服务商的proxy子类根据自身API生成自身特色的params集
+     * @return [type] [description]
+     */
+    abstract protected function formatResponse($response);
+
+    abstract protected function makeParams();
+
 }
