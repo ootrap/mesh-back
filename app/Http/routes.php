@@ -29,12 +29,10 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Authorization, Content-Type');
 
-Route::get('xx', 'AuthController@xx');
 
-Route::group(['prefix' => 'api'], function () {
+Route::group(['prefix' => 'api', 'middleware'=>'throttle:60'], function () {
     Route::post('register', 'AuthController@create');
-    Route::post('login', 'AuthController@authenticateLogin');
+    Route::post('login', 'AuthController@login');
     Route::post('forget', 'AuthController@findPassword');
-    Route::post('sendSms', 'AuthController@sendSms');
-    Route::get('getUsers', 'AuthController@test');
+    Route::post('sendSms', 'SMSController@fire');
 });
