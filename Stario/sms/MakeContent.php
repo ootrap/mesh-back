@@ -7,11 +7,11 @@ use Star\utils\RandomNum;
 /**
  * 生成短信内容
  */
-class MakeContent 
+class MakeContent
 {
-   use randomNum;
+    use randomNum;
 
-   private $content;
+    private $content;
 
    /**
     * 生成验证码后根据配置模板生成内容，并添加缓存（存储5分钟）
@@ -21,7 +21,7 @@ class MakeContent
     public function makeCode($key, $digit = 6)
     {
     	$code = $this->randomNum($digit);
-    	Cache::put($key, $code,50);
+    	Cache::put($key, $code, 5);
     	$pattern = '/{\w+}/';
         	$content = preg_replace($pattern, $code, \Config::get('sms.Templates.authcode'));
         	return $content;
@@ -34,5 +34,4 @@ class MakeContent
     // {
     	
     // }
-    
 }
