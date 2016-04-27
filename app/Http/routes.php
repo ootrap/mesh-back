@@ -35,4 +35,6 @@ Route::group(['prefix' => 'api', 'middleware'=>'throttle:60'], function () {
     Route::post('login', 'AuthController@login');
     Route::post('forget', 'AuthController@findPassword');
     Route::post('sendSms', 'SMSController@fire');
+
+    Route::get('mps', 'UserController@mps')->middleware('jwt.auth');
 });

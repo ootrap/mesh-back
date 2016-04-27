@@ -30,4 +30,10 @@ class UserRepo implements InterfaceUser
     {
         return $this->user->where('mobile', $data['mobile'])->update(['password' => bcrypt($data['password'])]);
     }
+
+    public function getWxmpsById($uid)
+    {
+        $user = $this->user->find($uid);
+        return $user->wxmps()->get();
+    }
 }
