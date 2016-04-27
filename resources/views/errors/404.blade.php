@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>维护中，请稍候... ...</title>
-
-        <link href="https://fonts.useso.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+        <title>404</title>
 
         <style>
             html, body {
@@ -40,7 +38,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">维护中，请稍候... ...</div>
+                <div class="title">页面并不存在... ...</div>
             </div>
         </div>
     </body>
