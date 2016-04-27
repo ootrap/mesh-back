@@ -18,7 +18,7 @@ class UserRepo implements InterfaceUser
         return $this->user->where('mobile', $mobile)->first();
     }
 
-    public function save($data)
+    public function saveUser($data)
     {
         return $this->user->create([
                 'mobile' => $data['mobile'],
@@ -26,7 +26,7 @@ class UserRepo implements InterfaceUser
             ]);
     }
 
-    public function update($data)
+    public function updateUser($data)
     {
         return $this->user->where('mobile', $data['mobile'])->update(['password' => bcrypt($data['password'])]);
     }

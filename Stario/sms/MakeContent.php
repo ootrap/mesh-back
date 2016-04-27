@@ -21,7 +21,7 @@ class MakeContent
     public function makeCode($key, $digit = 6)
     {
     	$code = $this->randomNum($digit);
-    	Cache::put($key, $code,5);
+    	Cache::put($key, $code,50);
     	$pattern = '/{\w+}/';
         	$content = preg_replace($pattern, $code, \Config::get('sms.Templates.authcode'));
         	return $content;

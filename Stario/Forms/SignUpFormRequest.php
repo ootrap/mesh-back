@@ -12,9 +12,9 @@ class SignUpFormRequest extends FormRequest
 {
     protected $user;
 
-    public function __construct()
+    public function __construct(UserRepo $user)
     {
-        $this->user = new User;
+        $this->user = $user;
     }
 
     public function authorize()
@@ -41,15 +41,16 @@ class SignUpFormRequest extends FormRequest
     {
         if (isset($_GET['findpass'])) {
             return $this->updatePassword();
+        } else {
+            return $this->createUser();
         }
-        return $this->createUser();
     }
 
     private function createUser()
     {
         $request = $this->request->all();
         try {
-            if ($this->user->where('mobile', $request['mobile'])->first()) {
+            if ($this->user->hasMobile($request['mobile'])) {
                 return response()->json(['result' => ['该手机号已经注册，请直接登陆']], 403);
             } elseif ($request['authCode'] !== Cache::get($request['mobile'])) {
                 return response()->json(['result' => ['短信验证码填写错误']], 403);
@@ -57,7 +58,8 @@ class SignUpFormRequest extends FormRequest
         } catch (Exception $e) {
                 return response()->json(['result' => [$e]], 500);
         }
-        $this->user->save($request);
+
+        $this->user->saveUser($request); //调用 UserRepo方法
         return response()->json(['result' => ['注册成功，请登陆']], 200);
     }
 
@@ -66,13 +68,13 @@ class SignUpFormRequest extends FormRequest
         $request = $this->request->all();
 
         try {
-            if (! $this->user->where('mobile', $request['mobile'])->first()) {
+            if (! $this->user->hasMobile($request['mobile'])) {
                 return response()->json(['result' => ['该手机号没有注册，请返回注册']], 403);
             }
         } catch (Exception $e) {
                 return response()->json(['result' => [$e]], 500);
         }
-        $this->user->update($request);
+        $this->user->updateUser($request); //调用 UserRepo方法
         return response()->json(['result' => ['密码重置成功，请重新登陆']], 200);
     }
 }

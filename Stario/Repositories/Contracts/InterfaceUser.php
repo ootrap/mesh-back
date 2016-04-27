@@ -7,7 +7,7 @@ interface InterfaceUser
         // public function getByMobile($mobile);
         public function getWxmpsById($uid);
         public function hasMobile($mobile);
-        public function save($data);
-        public function update($data);
+        public function saveUser($data);
+        public function updateUser($data);
         // public function all($columns = ['*'], $orderBy = 'id', $sortBy = 'asc');
 }
