@@ -19,10 +19,7 @@
 
 // });
 // 
-//第三方平台
-// Route::get('/', 'WechatController@index');
-// Route::get('/callback', 'WechatController@callback');
-// Route::post('/auth', 'WechatController@auth');
+
 
 // 本地测试用
 
@@ -40,3 +37,7 @@ Route::group(['prefix' => 'api', 'middleware'=>'throttle:60'], function () {
 
     Route::get('mps', 'UserController@mps')->middleware('jwt.auth');
 });
+
+// 微信第三方平台
+Route::get('/callback', 'WechatController@callback');
+Route::post('/auth', 'WechatController@auth');
