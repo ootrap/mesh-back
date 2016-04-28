@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -24,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $params = [
+            'url' => 'http://www.stario.net',
+            'isBind' => false,
+            'mps' => []
+        ];
+        return response()->json($params, 200);
     }
 }

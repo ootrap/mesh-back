@@ -17,8 +17,8 @@ class BechSmsProxy extends BaseFireSms
     public function makeParams()
     {
         $params = [
-          'accesskey' => \Config::get('sms.Settings.akey'),
-          'secretkey' => \Config::get('sms.Settings.skey'),
+          'accesskey' => config('sms.Settings.akey'),
+          'secretkey' => config('sms.Settings.skey'),
           'mobile' => $this->to,
           'content' => $this->content
         ];
@@ -33,7 +33,7 @@ class BechSmsProxy extends BaseFireSms
     {
         $statusCode = $response['statusCode'];
         $content = $response['content'];
-        $errCode = \Config::get('sms.ErrorCode');
+        $errCode = config('sms.ErrorCode');
         $result = json_decode($content)->result;
 
         if ($statusCode == '200') {

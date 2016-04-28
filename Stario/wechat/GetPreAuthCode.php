@@ -38,6 +38,6 @@ class GetPreAuthCode
         $array_e = $xml->getElementsByTagName('ComponentVerifyTicket');
 
         $component_verify_ticket = $array_e->item(0)->nodeValue;
-        Log::info('解密后的component_verify_ticket是：'.$component_verify_ticket);
+        // Log::info('解密后的component_verify_ticket是：'.$component_verify_ticket);
     }
 }

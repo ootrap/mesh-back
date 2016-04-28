@@ -26,7 +26,7 @@ abstract class BaseFireSms
     public function __construct($to, $content)
     {
         $this->to = $to;
-        $this->url = \Config::get('sms.Settings.url');
+        $this->url = config('sms.Settings.url');
         $this->content = urlencode($content);
         $this->params = $this->makeParams();
     }
@@ -68,5 +68,4 @@ abstract class BaseFireSms
     abstract protected function formatResponse($response);
 
     abstract protected function makeParams();
-
 }
