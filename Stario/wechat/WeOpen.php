@@ -65,6 +65,9 @@ class WeOpen
         $pc  = new AES($this->aeskey, $this->appId, $this->token);
         $decryptedMsg            = $pc->decode($rebuild);
         $component_verify_ticket = XML::parse($decryptedMsg)['ComponentVerifyTicket'];
+        if ($component_verify_ticket) {
+            echo "success";
+        }
         Cache::forever('ticket', $component_verify_ticket);
     }
 
