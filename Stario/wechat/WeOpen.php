@@ -6,12 +6,9 @@
     use Illuminate\Support\Facades\Log;
     use Star\wechat\support\AES;
     use Star\wechat\support\XML;
-    use Star\wechat\framework\ComponentVerifyTicketTrait;
 
 class WeOpen
 {
-    use ComponentVerifyTicketTrait;
-    
     protected $client;
     protected $component_access_token;
 
@@ -31,6 +28,8 @@ class WeOpen
     public function auth()
     {
         $this->getComponentVerifyTicket();
+        $this->getComponenAccessToken();
+        $this->getPreAuthCode();
     }
      /**
      * 引导已注册用户绑定自己的公众号
@@ -52,6 +51,84 @@ class WeOpen
     {
         $this->getAuthorizerAccessToken($authcode);
         $this->fetchInfo();
+    }
+
+    /**
+   * STEP 1:获取微信POST过来的授权数据后取得component_verify_ticket并缓存
+   */
+
+    private function getComponentVerifyTicket()
+    {
+        $rawPostData             = file_get_contents("php://input");
+        $encrypt                 = XML::parse($rawPostData)['Encrypt'];
+        $rebuild                 = XML::build(['ToUserName'=>'toUser','Encrypt'=>$encrypt]);
+        $pc  = new AES($this->aeskey, $this->appId, $this->token);
+        $decryptedMsg            = $pc->decode($rebuild);
+        $component_verify_ticket = XML::parse($decryptedMsg)['ComponentVerifyTicket'];
+        Cache::forever('ticket', $component_verify_ticket);
+    }
+
+    /**
+    * STEP 2:获取component_access_token
+    */
+    private function getComponenAccessToken()
+    {
+        $ticket = Cache::get('ticket');
+        if (empty ($ticket)) {
+            return json_encode([
+                    'message'=>'微信尚未发送数据,请等待10分钟'
+                ]);
+        }
+        $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
+        $result = $this->client->post($uri, ['json'=>["component_appid" => $this->appId,
+                "component_appsecret" => $this->secureKey,
+                "component_verify_ticket" => $ticket
+            ]]);
+        $data = json_decode($result->getBody());
+        Cache::forever('component_access_token', $data->{'component_access_token'});
+    }
+
+    /**
+     * STEP 3:获取预授权码，存入缓存
+     */
+    private function getPreAuthCode()
+    {
+        $component_access_token = Cache::get('component_access_token');
+        if (empty ($component_access_token)) {
+            $this->getComponenAccessToken();
+            return json_encode([
+                    'message'=>'微信尚未发送数据,请等待10分钟'
+                ]);
+        }
+        $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token='
+                    .$component_access_token;
+        $result = $this->client->post($uri, ['json'=>["component_appid" => $this->appId]]);
+        $data = json_decode($result->getBody());
+        if (empty($data->{'pre_auth_code'})) {
+            $this->getComponentVerifyTicket();
+            $this->getComponenAccessToken();
+        }
+        $preAuthCode = $data->{'pre_auth_code'};
+        Cache::forever('code', $preAuthCode);
+    }
+    /**
+     * STEP 4: 换取authorizer_access_token和authorizer_refresh_token
+     */
+    private function getAuthorizerAccessToken($authcode)
+    {
+         $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token='
+                    .Cache::get('component_access_token');
+
+        $result = $this->client->post($uri, ['json'=>[
+                "component_appid" => $this->appId,
+                "authorization_code" => $authcode
+                ]]);
+        $data = json_decode($result->getBody());
+    // TODO !!!!需要替换改为写入数据库！！！！！！！！！！！！！！！！！！！！！！
+        Cache::forever('refreshKey', $data->authorization_info->authorizer_refresh_token);
+        //TODO 这是授权的大众公众号的APPID,修改传递方式
+        Cache::forever('authorizerAppId', $data->authorization_info->authorizer_appid);
+        Cache::forever('authorizer_access_token', $data->authorization_info->authorizer_access_token);
     }
 
     //使用authorizer_refresh_token刷新authorizer_access_token

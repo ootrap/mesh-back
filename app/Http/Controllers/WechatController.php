@@ -41,6 +41,7 @@ class WechatController extends Controller
         return view('home', compact('code'));
     }
 
+    // 用于对应微信开发信息中接受auth post
     public function auth()
     {
         $this->weopen->auth();
