@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Star\Repositories\Eloquent\UserRepo;
 
 class HomeController extends Controller
 {
@@ -12,9 +14,9 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserRepo $user)
     {
-        // $this->middleware('auth');
+        $this->user = $user;
     }
 
     /**
@@ -24,11 +26,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $params = [
-            'url' => 'http://www.stario.net',
-            'isBind' => false,
-            'mps' => []
-        ];
-        return response()->json($params, 200);
+        $mps = $this->user->getWxmpsById(Auth::user()->id);
+        $preAuthCode = Cache::get('preAuthCode');
+        $url = 'https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxf50497c041778a84&pre_auth_code='.$preAuthCode.'&redirect_uri=http://w.stario.net/callback'
+        $isBind = empty($mps);
+
+        return response()->json([
+                    'url' => $url,
+                    'isBind' => $isBind,
+                    'mps' => $mps
+            ], 200);
     }
 }

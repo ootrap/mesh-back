@@ -25,24 +25,25 @@ class WeOpen
     * 供微信平台填写的验证url监听并解密其Ticket
     * @return [Laravel Cache] [将ticket写入缓存]
     */
-    public function auth()
-    {
-        $this->getComponentVerifyTicket();
-        $this->getComponenAccessToken();
-        $this->getPreAuthCode();
-    }
-     /**
-     * 引导已注册用户绑定自己的公众号
-     * @return [type] [description]
-     */
-    public function bindMP()
-    {
-        // 绑定公众号需要视图中的超链接加入pre_auth_code参数
-        // https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid
-        // =wxf50497c041778a84&pre_auth_code={{$code}}
-        // &redirect_uri=http://w.stario.net/callback
-        $this->getPreAuthCode();
-    }
+    // public function auth()
+    // {
+    //     $this->getComponentVerifyTicket();
+    //     $this->getComponenAccessToken();
+    //     $this->getPreAuthCode();
+    // }
+
+    //  /**
+    //  * 引导已注册用户绑定自己的公众号
+    //  * @return [type] [description]
+    //  */
+    // public function bindMP()
+    // {
+    //     // 绑定公众号需要视图中的超链接加入pre_auth_code参数
+    //     // https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid
+    //     // =wxf50497c041778a84&pre_auth_code={{$code}}
+    //     // &redirect_uri=http://w.stario.net/callback
+    //     $this->getPreAuthCode();
+    // }
 
     /**
      * 对应第三方平台中填写的回调地址，并根据传入的验证码参数获取基础信息
@@ -57,7 +58,7 @@ class WeOpen
    * STEP 1:获取微信POST过来的授权数据后取得component_verify_ticket并缓存
    */
 
-    private function getComponentVerifyTicket()
+    public function getComponentVerifyTicket()
     {
         $rawPostData             = file_get_contents("php://input");
         $encrypt                 = XML::parse($rawPostData)['Encrypt'];
@@ -74,7 +75,7 @@ class WeOpen
     /**
     * STEP 2:获取component_access_token
     */
-    private function getComponenAccessToken()
+    public function getComponenAccessToken()
     {
         $ticket = Cache::get('wx_ticket');
         if (empty ($ticket)) {
@@ -94,7 +95,7 @@ class WeOpen
     /**
      * STEP 3:获取预授权码，存入缓存
      */
-    private function getPreAuthCode()
+    public function getPreAuthCode()
     {
         $component_access_token = Cache::get('component_access_token');
         if (empty ($component_access_token)) {
@@ -117,7 +118,7 @@ class WeOpen
     /**
      * STEP 4: 换取authorizer_access_token和authorizer_refresh_token
      */
-    private function getAuthorizerAccessToken($authcode)
+    public function getAuthorizerAccessToken($authcode)
     {
          $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token='
                     .Cache::get('component_access_token');
@@ -135,7 +136,7 @@ class WeOpen
     }
 
     //使用authorizer_refresh_token刷新authorizer_access_token
-    private function refreshAuthorizeToken()
+    public function refreshAuthorizeToken()
     {
         $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token='
                     .Cache::get('component_access_token');
@@ -189,7 +190,7 @@ class WeOpen
      * }
      * @return [type] [description]
      */
-    private function fetchInfo()
+    public function fetchInfo()
     {
         $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token='
                     .Cache::get('component_access_token');
@@ -204,7 +205,7 @@ class WeOpen
     }
 
     
-    private function fetchOptionInfo($optionName)
+    public function fetchOptionInfo($optionName)
     {
         $uri = 'https://api.weixin.qq.com/cgi-bin/component/ api_get_authorizer_option?component_access_token'
                     .Cache::get('component_access_token');

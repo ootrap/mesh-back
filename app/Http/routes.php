@@ -1,26 +1,4 @@
 <?php
-/*
-|--------------------------------------------------------------------------
-| Routes File
-|--------------------------------------------------------------------------
-|
-| Here is where you will register all of the routes in an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-// Common
-// 
-// Route::group(['prefix'=>'wechat','middleware'=>['web','wechat.oauth']],function(){
-
-//   Route::get('/','WechatController@index');
-//   Route::any('/serve', 'WechatController@serve');
-//   Route::get('/callback','WechatController@callback');
-
-// });
-// 
-
-
 // 本地测试用
 
 header('Access-Control-Allow-Origin: *');
