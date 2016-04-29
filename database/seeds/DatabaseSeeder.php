@@ -11,21 +11,20 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    protected $toTruncate = ['users'];
+    // protected $toTruncate = ['users'];
 
     public function run()
     {
         Model::unguard();
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        // DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
-        foreach ($this->toTruncate as $table) {
-            DB::table($table)->truncate();
-        }
+        // foreach ($this->toTruncate as $table) {
+        //     DB::table($table)->truncate();
+        // }
 
         // $this->call(ArticlesTableSeeder::class);
         // $this->call(StatusesTableSeeder::class);
         // $this->call(TagsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
-        
     }
 }

@@ -68,7 +68,7 @@ class WeOpen
         if ($component_verify_ticket) {
             echo "success";
         }
-        Cache::forever('ticket', $component_verify_ticket);
+        Cache::forever('wx_ticket', $component_verify_ticket);
     }
 
     /**
@@ -76,7 +76,7 @@ class WeOpen
     */
     private function getComponenAccessToken()
     {
-        $ticket = Cache::get('ticket');
+        $ticket = Cache::get('wx_ticket');
         if (empty ($ticket)) {
             return json_encode([
                     'message'=>'微信尚未发送数据,请等待10分钟'
@@ -112,7 +112,7 @@ class WeOpen
             $this->getComponenAccessToken();
         }
         $preAuthCode = $data->{'pre_auth_code'};
-        Cache::forever('code', $preAuthCode);
+        Cache::forever('preAuthCode', $preAuthCode);
     }
     /**
      * STEP 4: 换取authorizer_access_token和authorizer_refresh_token

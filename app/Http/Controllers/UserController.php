@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Star\Repositories\Eloquent\UserRepo;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
@@ -17,6 +18,7 @@ class UserController extends Controller
 
     public function mps()
     {
+        dd(JWTAuth::getToken());
         return $this->user->getWxmpsById(Auth::user()->id);
     }
 }

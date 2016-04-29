@@ -16,7 +16,7 @@ class CreateWxmpsTable extends Migration
             $table->increments('id');
             $table->boolean('authorized');
             $table->bigInteger('user_id')->unsigned();
-            $table->string('token');
+            $table->string('refresh_token');
             $table->string('avatar_url');
             $table->string('qr_url');
             $table->timestamps();

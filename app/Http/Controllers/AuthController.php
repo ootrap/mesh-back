@@ -27,6 +27,14 @@ class AuthController extends Controller
     }
 
     /**
+     * 刷新token
+     */
+    public function refreshToken()
+    {
+        return LoginFormRequest::refreshToken();
+    }
+
+    /**
      * 用户注册
      * @param  SignUpFormRequest $request [description]
      * @return [type]                     [description]

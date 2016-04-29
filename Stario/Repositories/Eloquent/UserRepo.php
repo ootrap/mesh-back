@@ -31,9 +31,17 @@ class UserRepo implements InterfaceUser
         return $this->user->where('mobile', $data['mobile'])->update(['password' => bcrypt($data['password'])]);
     }
 
+    /**
+     * 获取登陆用户全部的微信公众号列表
+     * @param  [integer] $uid 用户id
+     */
     public function getWxmpsById($uid)
     {
         $user = $this->user->find($uid);
-        return $user->wxmps()->get();
+        $mps = $user->wxmps()->get();
+        if (count($mps) > 0) {
+            return $mps;
+        }
+        return response()->json(['result' => null]);
     }
 }

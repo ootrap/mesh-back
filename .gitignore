@@ -6,4 +6,4 @@ Homestead.json
 .env
 sftp-config.json
 /.phpintel
-
+composer.lock

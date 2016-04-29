@@ -43,4 +43,17 @@ class LoginFormRequest extends FormRequest
           'result' => $token
           ], 200);
     }
+    public static function refreshToken()
+    {
+        $token = JWTAuth::getToken();
+        if (!$token) {
+            throw new BadRequestHtttpException('Token not provided');
+        }
+        try {
+            $token = JWTAuth::refresh($token);
+        } catch (TokenInvalidException $e) {
+            throw new AccessDeniedHttpException('The token is invalid');
+        }
+        return response()->json(['result'=>$token]);
+    }
 }
