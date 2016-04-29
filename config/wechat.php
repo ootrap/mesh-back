@@ -20,6 +20,8 @@ return [
     'secret'  => env('WECHAT_SECRET', 'your-app-secret'),     // AppSecret
     'token'   => env('WECHAT_TOKEN', 'your-token'),          // Token
     'aes_key' => env('WECHAT_AES_KEY', ''),                    // EncodingAESKey
+    'redirect_url' => env('WECHAT_REDIRECT_URI', ''),
+    'callback' => env('WECHAT_OAUTH_CALLBACK', ''),
 
     /**
      * 日志配置
