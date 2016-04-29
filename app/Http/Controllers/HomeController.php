@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         $mps = $this->user->getWxmpsById(Auth::user()->id);
         $preAuthCode = Cache::get('preAuthCode');
-        $url = 'https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxf50497c041778a84&pre_auth_code='.$preAuthCode.'&redirect_uri=http://w.stario.net/callback'
+        $url = 'https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxf50497c041778a84&pre_auth_code='.$preAuthCode.'&redirect_uri=http://w.stario.net/callback';
         $isBind = empty($mps);
 
         return response()->json([
