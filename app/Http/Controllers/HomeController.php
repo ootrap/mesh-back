@@ -29,7 +29,7 @@ class HomeController extends Controller
     {
         $mps = $this->user->getWxmpsById(Auth::user()->id);
         $preAuthCode = Cache::get('preAuthCode');
-        $url = 'https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid='.$your_appid.'&pre_auth_code='.$your_pre_auth_code.'&redirect_uri='.$your_own_redirect_uri;
+        $url = 'https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid='.config('wechat.app_id').'&pre_auth_code='.$preAuthCode.'&redirect_uri='.config('wechat.redirect_url');
         $isBind = empty($mps);
 
         return response()->json([
