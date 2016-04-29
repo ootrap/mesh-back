@@ -45,8 +45,8 @@ class WechatController extends Controller
     // 然后获取预授权码
     public function auth()
     {
-        $this->weopen->getComponentVerifyTicket()
-                                        ->getPreAuthCode();
+        $this->weopen->getComponentVerifyTicket();
+         $this->weopen->getPreAuthCode();
     }
 
     //用户在微信客户端授权后页面会跳转，如果同意授权会发送一个auth_code
