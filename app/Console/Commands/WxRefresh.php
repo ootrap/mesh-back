@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Star\wechat\WeOpen;
 
-class GetWxComponentAccessToken extends Command
+class WxRefresh extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'wx:getComponenAccessToken';
+    protected $signature = 'wx:refresh';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Fetch wechat compnent access token';
+    protected $description = 'Fetch wechat compnent_access_token and authorizer_access_token';
 
     protected $wx;
 
@@ -28,10 +28,9 @@ class GetWxComponentAccessToken extends Command
      *
      * @return void
      */
-    public function __construct(WeOpen $wx)
+    public function __construct()
     {
         parent::__construct();
-        $this->wx = $wx;
     }
 
     /**
@@ -41,6 +40,6 @@ class GetWxComponentAccessToken extends Command
      */
     public function handle()
     {
-        $this->wx->getComponenAccessToken();
+        WeOpen::getComponenAccessToken();
     }
 }
