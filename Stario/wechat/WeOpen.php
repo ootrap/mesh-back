@@ -15,7 +15,7 @@ class WeOpen
     static protected $token;
     static protected $aeskey;
 
-    public function __construct()
+    public function __construct(Client $client)
     {
         $this->client = $client;
         $this->appId = config('wechat.app_id');
