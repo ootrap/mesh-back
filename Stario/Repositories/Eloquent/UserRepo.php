@@ -2,6 +2,7 @@
 namespace Star\Repositories\Eloquent;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Star\Repositories\Contracts\InterfaceUser;
 
 class UserRepo implements InterfaceUser
@@ -35,13 +36,24 @@ class UserRepo implements InterfaceUser
      * 获取登陆用户全部的微信公众号列表
      * @param  [integer] $uid 用户id
      */
-    public function getWxmpsById($uid)
+    public function findAllMps()
     {
-        $user = $this->user->find($uid);
+        $user = $this->user->find(Auth::user()->id);
         $mps = $user->wxmps()->get();
         if (count($mps) > 0) {
             return $mps;
         }
         return response()->json(['result' => null]);
+    }
+
+    public function findMpById($id)
+    {
+        
+    }
+
+    public function createMp($wxData)
+    {
+        $name = $wxData->authorizer_info->user_name;
+        dd($name);
     }
 }

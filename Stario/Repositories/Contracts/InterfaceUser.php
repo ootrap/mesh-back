@@ -5,7 +5,9 @@ interface InterfaceUser
 {
         // public function getById($id);
         // public function getByMobile($mobile);
-        public function getWxmpsById($uid);
+        public function findAllMps();
+        public function findMpById($id);
+        public function createMp($wxData);
         public function hasMobile($mobile);
         public function saveUser($data);
         public function updateUser($data);
