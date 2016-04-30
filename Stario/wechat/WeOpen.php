@@ -15,13 +15,13 @@ class WeOpen
     static protected $token;
     static protected $aeskey;
 
-    public function __construct(Client $client)
+    public function __construct()
     {
-        $this->client = $client;
-        $this->appId = config('wechat.app_id');
-        $this->secureKey = config('wechat.secret');
-        $this->token = config('wechat.token');
-        $this->aeskey = config('wechat.aes_key');
+        self::$client = new Client;
+        self::$appId = config('wechat.app_id');
+        self::$secureKey = config('wechat.secret');
+        self::$token = config('wechat.token');
+        self::$aeskey = config('wechat.aes_key');
     }
 
     /**
@@ -64,7 +64,7 @@ class WeOpen
                 ]);
         }
         $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
-        $result = self::client()->post($uri, ['json'=>["component_appid" => self::$appId,
+        $result = self::$client->post($uri, ['json'=>["component_appid" => self::$appId,
                 "component_appsecret" => self::$secureKey,
                 "component_verify_ticket" => $ticket
             ]]);
