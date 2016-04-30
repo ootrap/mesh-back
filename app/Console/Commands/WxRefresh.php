@@ -28,9 +28,10 @@ class WxRefresh extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(WeOpen $wx)
     {
         parent::__construct();
+        $this->wx = $wx;
     }
 
     /**
@@ -40,6 +41,6 @@ class WxRefresh extends Command
      */
     public function handle()
     {
-        WeOpen::getComponenAccessToken();
+        $wx->getComponenAccessToken();
     }
 }
