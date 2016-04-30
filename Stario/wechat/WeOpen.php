@@ -91,12 +91,17 @@ class WeOpen
         }
         $preAuthCode = $data->{'pre_auth_code'};
         Cache::forever('wx_preAuthCode', $preAuthCode);
+        return $preAuthCode;
     }
     /**
      * STEP 4: 换取authorizer_access_token和authorizer_refresh_token
      */
     public function getAuthorizerAccessToken($authcode)
     {
+        $componentAccessToken = Cache::get('wx_component_access_token');
+        if (empty($componentAccessToken)) {
+             $this->getComponenAccessToken();
+        }
          $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token='
                     .Cache::get('wx_component_access_token');
 
