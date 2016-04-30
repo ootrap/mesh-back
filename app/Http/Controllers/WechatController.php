@@ -10,7 +10,7 @@ class WechatController extends Controller
 
     protected $weopen;
 
-    public function __construct()
+    public function __construct(WeOpen $weopen)
     {
         $this->weopen = $weopen;
     }
