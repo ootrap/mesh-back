@@ -20,4 +20,4 @@ Route::group(['prefix'=>'api/admin', 'middleware' => ['api']], function () {
 
 // 微信第三方平台
 Route::get('/callback', 'WechatController@callback');
-Route::post('/auth', 'WechatController@auth');
+Route::any('/auth', 'WechatController@auth');

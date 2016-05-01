@@ -1,6 +1,7 @@
 <?php 
 namespace Star\wechat\support;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Star\wechat\support\ErrorCode;
 
@@ -72,9 +73,9 @@ class AES {
         }
 
         $encrypt = $arr['encrypt'];
-        $nonce = $arr['nonce'];
-        $timestamp = $arr['timestamp'];
-        $msgSignature = $arr['msgsignature'];
+        $nonce = Cache::get('nonce');
+        $timestamp = Cache::get('timestamp');
+        $msgSignature = Cache::get('msgsignature');
 
         $signature = $this->signature($timestamp, $nonce, $encrypt);
 

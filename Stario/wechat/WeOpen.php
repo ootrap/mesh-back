@@ -39,6 +39,13 @@ class WeOpen
         if ($component_verify_ticket) {
             echo "success";
         }
+        //微信发送过来的URL参数,供解密使用
+        $nonce = $_GET['nonce'];
+        $timestamp = $_GET['timestamp'];
+        $msgSignature = $_GET['msg_signature'];
+        Cache::forever('nonce', $nonce);
+        Cache::forever('timestamp', $timestamp);
+        Cache::forever('msgsignature', $msgSignature);
         Cache::forever('wx_ticket', $component_verify_ticket);
     }
 
