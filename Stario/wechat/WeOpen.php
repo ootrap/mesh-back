@@ -33,7 +33,7 @@ class WeOpen
         $rawPostData             = file_get_contents("php://input");
         $encrypt                 = XML::parse($rawPostData)['Encrypt'];
         $rebuild                 = XML::build(['ToUserName'=>'toUser','Encrypt'=>$encrypt]);
-        $pc  = new AES(self::$aeskey, self::$appId, self::$token, $_GET['nonce'], $_GET['timestamp'], $_GET['msg_signature']);
+        $pc  = new AES(self::$aeskey, self::$appId, self::$token);
         $decryptedMsg            = $pc->decode($rebuild);
         $component_verify_ticket = XML::parse($decryptedMsg)['ComponentVerifyTicket'];
         if ($component_verify_ticket) {

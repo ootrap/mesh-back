@@ -14,7 +14,7 @@ class AES {
 
     private $iv;
 
-    public function __construct($key, $appId, $token, $nonce, $timestamp, $msgsignature)
+    public function __construct($key, $appId, $token)
     {
         $this->key = base64_decode($key.'=');
         if ($this->key === false || strlen($this->key) != 32) {
@@ -23,9 +23,6 @@ class AES {
         $this->iv = substr($this->key, 0, 16);
         $this->appId = $appId;
         $this->token = $token;
-        $this->nonce = $nonce;
-        $this->timestamp = $timestamp;
-        $this->msgsignature = $msgsignature;
     }
 
     /**
@@ -75,9 +72,9 @@ class AES {
         }
 
         $encrypt = $arr['encrypt'];
-        $nonce = $this->nonce;
-        $timestamp = $this->timestamp;
-        $msgSignature = $this->msgsignature;
+        $nonce = $arr['nonce'];
+        $timestamp = $arr['timestamp'];
+        $msgSignature = $arr['msgsignature'];
 
         $signature = $this->signature($timestamp, $nonce, $encrypt);
 
