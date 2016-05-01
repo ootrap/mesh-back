@@ -33,7 +33,7 @@ class WeOpen
         $rawPostData             = file_get_contents("php://input");
         $encrypt                 = XML::parse($rawPostData)['Encrypt'];
         $rebuild                 = XML::build(['ToUserName'=>'toUser','Encrypt'=>$encrypt]);
-        $pc  = new AES(self::$aeskey, self::$appId, self::$token);
+        $pc  = new AES(self::$aeskey, self::$appId, self::$token, $_GET['nonce'], $_GET['timestamp'], $_GET['msg_signature']);
         $decryptedMsg            = $pc->decode($rebuild);
         $component_verify_ticket = XML::parse($decryptedMsg)['ComponentVerifyTicket'];
         if ($component_verify_ticket) {
@@ -49,10 +49,8 @@ class WeOpen
     public static function getComponenAccessToken()
     {
         $ticket = Cache::get('wx_ticket');
-        if (empty ($ticket)) {
-            return  json_encode([
-                    'message'=>'微信尚未发送数据,请等待10分钟'
-                ]);
+        if (empty ($ticket = Cache::get('wx_ticket'))) {
+            return 'Please wait 10 minutes.';
         }
         $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
         $result = self::$client->post($uri, ['json'=>["component_appid" => self::$appId,
