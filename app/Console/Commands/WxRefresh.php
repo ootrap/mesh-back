@@ -41,6 +41,6 @@ class WxRefresh extends Command
      */
     public function handle()
     {
-        $wx->getComponenAccessToken();
+        $this->wx->getComponenAccessToken();
     }
 }
