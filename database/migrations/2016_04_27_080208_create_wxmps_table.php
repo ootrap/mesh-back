@@ -13,10 +13,11 @@ class CreateWxmpsTable extends Migration
     public function up()
     {
         Schema::create('wxmps', function (Blueprint $table) {
-            $table->string('appId', 50);
+            $table->increments('id');
+            $table->string('appId', 50)->unique();
             $table->string('name', 50);
+            $table->string('nickname', 50);
             $table->boolean('authorized');
-            $table->bigInteger('user_id')->unsigned();
             $table->string('token');
             $table->string('refresh_token');
             $table->string('avatar_url');

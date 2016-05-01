@@ -43,7 +43,7 @@ class UserRepo implements InterfaceUser
         if (count($mps) > 0) {
             return $mps;
         }
-        return response()->json(['result' => null]);
+        return false;
     }
 
     public function findMpById($id)
@@ -53,7 +53,13 @@ class UserRepo implements InterfaceUser
 
     public function createMp($wxData)
     {
-        $name = $wxData->authorizer_info->user_name;
-        dd($name);
+        $user = $this->user->find(Auth::user()->id);
+        $data = json_decode($wxData);
+        $appid = $data->authorization_info->authorizer_appid;
+        $name = $data->authorizer_info->user_name;
+        $authorized = true;
+        $avatar_url = $data->authorizer_info->head_img;
+        $qr_url = $data->authorizer_info->qrcode_url;
+        dd($qr_url);
     }
 }

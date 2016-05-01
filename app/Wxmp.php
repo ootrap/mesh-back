@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wxmp extends Model
 {
-        protected $fillable = [
+        protected $guarded = [
         'authorized', 'user_id', 'token'
     ];
 
     public function users()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsToMany('App\User', 'wxmp_user');
     }
 }

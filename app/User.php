@@ -26,6 +26,6 @@ class User extends Authenticatable
 
     public function wxmps()
     {
-        return $this->hasMany('App\Wxmp');
+        return $this->belongsToMany('App\Wxmp', 'wxmp_user');
     }
 }
