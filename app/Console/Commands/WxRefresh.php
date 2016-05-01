@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Star\wechat\WeOpen;
 
 class WxRefresh extends Command
@@ -41,5 +42,6 @@ class WxRefresh extends Command
     public function handle()
     {
         WeOpen::getComponenAccessToken();
+        Log::info('俺刷新了ComponenAccessToken');
     }
 }
