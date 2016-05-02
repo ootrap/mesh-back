@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Wxmp;
+use Star\Repositories\Eloquent\UserRepo;
 use Star\wechat\WeOpen;
 
 class WechatController extends Controller
