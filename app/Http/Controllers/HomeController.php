@@ -38,7 +38,7 @@ class HomeController extends Controller
         }
         $preAuthCode = WeOpen::getPreAuthCode();
         $url = 'https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid='.config('wechat.app_id').'&pre_auth_code='.$preAuthCode.'&redirect_uri='.config('wechat.redirect_url');
-        $isBind = empty($mps);
+        $isBind = !empty($mps);
 
         return response()->json([
                     'url' => $url,

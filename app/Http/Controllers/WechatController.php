@@ -25,5 +25,6 @@ class WechatController extends Controller
     public function callback()
     {
         $data = $this->weopen->getAuthorizerAccessToken($_GET['auth_code']);
+        dd($data);
     }
 }
