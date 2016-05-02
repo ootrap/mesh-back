@@ -14,16 +14,6 @@ class WeOpen
     public static $secureKey;
     public static $token;
     public static $aeskey;
-
-    /**
-     * 对应第三方平台中填写的回调地址，并根据传入的验证码参数获取基础信息
-     */
-    // public function callback($authcode)
-    // {
-    //     $this->getAuthorizerAccessToken($authcode);
-    //     $this->fetchInfo();
-    // }
-
     /**
    * STEP 1:获取微信POST过来的授权数据后取得component_verify_ticket并缓存
    */
@@ -49,7 +39,6 @@ class WeOpen
             Cache::forever('wx_ticket', $component_verify_ticket);
             Log::info('俺成功刷新了wx_ticket:'.$component_verify_ticket);
         }
-
     }
 
     /**
@@ -91,6 +80,7 @@ class WeOpen
         }
         $preAuthCode = $data->{'pre_auth_code'};
         Cache::forever('wx_preAuthCode', $preAuthCode);
+        Log::info('俺获取了preAuthCode，已放进缓存');
         return $preAuthCode;
     }
     /**
@@ -110,11 +100,6 @@ class WeOpen
                 "authorization_code" => $authcode
                 ]]);
         return  json_decode($result->getBody());
-    // // TODO !!!!需要替换改为写入数据库！！！！！！！！！！！！！！！！！！！！！！
-    //     Cache::forever('refreshToken', $data->authorization_info->authorizer_refresh_token);
-    //     //TODO 这是授权的大众公众号的APPID,修改传递方式
-    //     Cache::forever('authorizerAppId', $data->authorization_info->authorizer_appid);
-    //     Cache::forever('authorizer_access_token', $data->authorization_info->authorizer_access_token);
     }
 
     //使用authorizer_refresh_token刷新authorizer_access_token
@@ -133,20 +118,18 @@ class WeOpen
     }
 
     /**
-     * 获取公众号的基本信息
+     * 根据传入的appID来获取公众号的基本信息
      */
-    public static function fetchInfo()
+    public static function fetchInfo($appId)
     {
         $uri = 'https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token='
                     .Cache::get('wx_component_access_token');
 
         $result = $this->client->post($uri, ['json'=>[
                 "component_appid" => $this->appId,
-                "authorizer_appid" => Cache::get('wx_authorizerAppId'),
+                "authorizer_appid" => $appId,
                 ]]);
-        $data = json_decode($result->getBody());
-        echo json_encode($data);
-        //TODO qrcode_url 入库保存
+         return json_decode($result->getBody());
     }
     
     public function fetchOptionInfo($optionName)

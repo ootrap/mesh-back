@@ -15,13 +15,13 @@ class CreateWxmpsTable extends Migration
         Schema::create('wxmps', function (Blueprint $table) {
             $table->increments('id');
             $table->string('appId', 50)->unique();
-            $table->string('name', 50);
-            $table->string('nickname', 50);
-            $table->boolean('authorized');
-            $table->string('token');
+            $table->string('name', 50)->nullable();
+            $table->string('nickname', 50)->nullable();
+            $table->boolean('authorized')->nullable();
+            $table->string('token')->nullable();
             $table->string('refresh_token');
-            $table->string('avatar_url');
-            $table->string('qr_url');
+            $table->string('avatar_url')->nullable();
+            $table->string('qr_url')->nullable();
             $table->timestamps();
         });
     }

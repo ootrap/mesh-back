@@ -3,33 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Wxmp;
 use Star\wechat\WeOpen;
 
 class WechatController extends Controller
 {
 
-    protected $weopen;
+    protected $user;
 
-    public function __construct(WeOpen $weopen)
+    public function __construct(UserRepo $user)
     {
-        $this->weopen = $weopen;
+        $this->user = $user;
     }
 
     // 接收来自微信发送过来的信息，解密获取ticket，并缓存['wx_ticket']
     public function auth()
     {
-        $this->weopen->getComponentVerifyTicket();
+        WeOpen::getComponentVerifyTicket();
     }
 
     //用户在微信客户端授权后页面会跳转，如果同意授权会发送一个auth_code
     public function callback()
     {
-        $data = $this->weopen->getAuthorizerAccessToken($_GET['auth_code']);
-        dd($data);
-        // TODO
-        // $appid = $data->authorization_info->authorizer_appid;
-        // if (Wxmp->where('appId', $id)->first()){
-        //      
-        // }
+        $data = WeOpen::getAuthorizerAccessToken($_GET['auth_code']);
+        $this->user->createMp($data);
     }
 }

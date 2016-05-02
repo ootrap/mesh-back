@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Wxmp extends Model
 {
         protected $guarded = [
-        'authorized', 'user_id', 'token'
+        'id'
     ];
 
     public function users()

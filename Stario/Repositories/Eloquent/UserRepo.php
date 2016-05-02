@@ -4,6 +4,7 @@ namespace Star\Repositories\Eloquent;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Star\Repositories\Contracts\InterfaceUser;
+use Star\wechat\WeOpen;
 
 class UserRepo implements InterfaceUser
 {
@@ -51,15 +52,19 @@ class UserRepo implements InterfaceUser
         
     }
 
+    /**
+     * 将传递来的数据择入数据库
+     * @param  [type] $wxData 微信返回的原始数据
+     * @return [type]         [description]
+     */
     public function createMp($wxData)
     {
         $user = $this->user->find(Auth::user()->id);
         $data = json_decode($wxData);
         $appid = $data->authorization_info->authorizer_appid;
-        $name = $data->authorizer_info->user_name;
-        $authorized = true;
-        $avatar_url = $data->authorizer_info->head_img;
-        $qr_url = $data->authorizer_info->qrcode_url;
-        dd($qr_url);
+        $token = $data->authorizer_info->authorizer_access_token;
+        $refreshToken = $data->authorizer_info->authorizer_refresh_token;
+        $wxInfo = WeOpen::fetchInfo($appid);
+        dd($wxInfo);
     }
 }
