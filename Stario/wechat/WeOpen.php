@@ -37,7 +37,6 @@ class WeOpen
         Cache::forever('nonce', $nonce);
         Cache::forever('timestamp', $timestamp);
         Cache::forever('msgsignature', $msgSignature);
-        Cache::forever('wx_ticket', $component_verify_ticket);
 
         $rawPostData             = file_get_contents("php://input");
         $encrypt                 = XML::parse($rawPostData)['Encrypt'];
@@ -47,6 +46,7 @@ class WeOpen
         $component_verify_ticket = XML::parse($decryptedMsg)['ComponentVerifyTicket'];
         if ($component_verify_ticket) {
             echo "success";
+            Cache::forever('wx_ticket', $component_verify_ticket);
         }
 
     }
