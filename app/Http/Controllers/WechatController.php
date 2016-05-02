@@ -26,5 +26,10 @@ class WechatController extends Controller
     {
         $data = $this->weopen->getAuthorizerAccessToken($_GET['auth_code']);
         dd($data);
+        // TODO
+        // $appid = $data->authorization_info->authorizer_appid;
+        // if (Wxmp->where('appId', $id)->first()){
+        //      
+        // }
     }
 }

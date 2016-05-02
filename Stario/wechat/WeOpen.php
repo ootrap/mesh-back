@@ -47,6 +47,7 @@ class WeOpen
         if ($component_verify_ticket) {
             echo "success";
             Cache::forever('wx_ticket', $component_verify_ticket);
+            Log::info('俺成功刷新了wx_ticket:'.$component_verify_ticket);
         }
 
     }
@@ -68,6 +69,7 @@ class WeOpen
             ]]);
         $data = json_decode($result->getBody());
         Cache::forever('wx_component_access_token', $data->{'component_access_token'});
+        Log::info('俺成功刷新了wx_component_access_token'.$data->{'component_access_token'});
     }
 
     /**

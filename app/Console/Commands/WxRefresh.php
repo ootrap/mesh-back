@@ -42,6 +42,6 @@ class WxRefresh extends Command
     public function handle()
     {
         WeOpen::getComponenAccessToken();
-        Log::info('俺刷新了ComponenAccessToken');
+        Log::info('俺是art命令，俺刷新了ComponenAccessToken');
     }
 }
