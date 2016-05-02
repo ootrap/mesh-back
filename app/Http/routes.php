@@ -1,8 +1,4 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Authorization, Content-Type');
-
-
  Route::get('test', 'TestController@index');
  
 Route::group(['prefix' => 'api/auth', 'middleware'=>'throttle:60'], function () {
@@ -21,3 +17,7 @@ Route::group(['prefix'=>'api/admin', 'middleware' => ['api']], function () {
 
 // 微信第三方平台
 Route::any('/auth', 'WechatController@auth');
+
+Route::get('/', function () {
+    return view('home');
+});
