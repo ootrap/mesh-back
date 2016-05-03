@@ -58,7 +58,7 @@ class UserRepo implements InterfaceUser
      */
     public function createMp($wxData)
     {
-        dd($this->user); 
+        $user = $this->user->find($uid);
         $data = json_decode($wxData);
         $appid = $data->authorization_info->authorizer_appid;
         $token = $data->authorizer_info->authorizer_access_token;

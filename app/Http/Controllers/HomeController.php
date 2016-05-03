@@ -14,6 +14,7 @@ use Star\wechat\WeOpen;
 class HomeController extends Controller
 {
     protected $user;
+    static protected $wxData;
 
     public function __construct()
     {
@@ -48,6 +49,8 @@ class HomeController extends Controller
     public function callback()
     {
         $data = WeOpen::getAuthorizerAccessToken($_GET['auth_code']);
-        $this->user->createMp($data);
+        self::$wxData = $data;
+        dd(self::$wxData);
+        // $this->user->createMp($data);
     }
 }
