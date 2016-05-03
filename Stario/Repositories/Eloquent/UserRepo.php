@@ -9,10 +9,10 @@ use Star\wechat\WeOpen;
 class UserRepo implements InterfaceUser
 {
     protected $user;
-
-    public function __construct()
+    
+    public function __construct(User $user)
     {
-        $this->user = new User;
+        $this->user = $user;
     }
 
     public function hasMobile($mobile)
@@ -39,15 +39,14 @@ class UserRepo implements InterfaceUser
      */
     public function findAllMps()
     {
-        $user = $this->user->find(Auth::user()->id);
-        $mps = $user->wxmps()->get();
+        $mps = $this->user->wxmps()->get();
         if (count($mps) > 0) {
             return $mps;
         }
         return false;
     }
 
-    public function findMpById($id)
+    public function findMp()
     {
         
     }
@@ -59,7 +58,7 @@ class UserRepo implements InterfaceUser
      */
     public function createMp($wxData)
     {
-        $user = $this->user->find(Auth::user()->id);
+        dd($this->user); 
         $data = json_decode($wxData);
         $appid = $data->authorization_info->authorizer_appid;
         $token = $data->authorizer_info->authorizer_access_token;
