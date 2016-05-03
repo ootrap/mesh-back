@@ -14,12 +14,12 @@ Route::group(['prefix' => 'api/auth', 'middleware'=>'throttle:60'], function () 
 
 Route::group(['prefix'=>'api/admin', 'middleware' => ['api']], function () {
     Route::get('home', 'HomeController@index');
-    Route::get('callback', 'HomeController@callback');
     Route::get('mps', 'UserController@mps');
 });
 
 // 微信第三方平台
 Route::any('/auth', 'HomeController@auth');
+Route::get('/callback', 'HomeController@callback');
 
 Route::get('/', function () {
     return view('home');
