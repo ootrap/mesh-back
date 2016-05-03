@@ -16,9 +16,9 @@ class HomeController extends Controller
     protected $user;
     static protected $wxData;
 
-    public function __construct()
+    public function __construct(UserRepo $user)
     {
-        $this->user = new UserRepo(Auth::user());
+        $this->user = $user;
     }
 
     /**
