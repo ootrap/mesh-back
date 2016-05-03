@@ -16,9 +16,8 @@ class UserController extends Controller
         $this->user = $user;
     }
 
-    public function mps()
+    public function mplist()
     {
-        dd(JWTAuth::getToken());
-        return $this->user->getWxmpsById(Auth::user()->id);
+        return $this->user->findAllMps(Auth::user());
     }
 }
