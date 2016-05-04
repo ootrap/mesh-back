@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Star\Repositories\Eloquent\UserRepo;
 use Star\wechat\WeOpen;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class HomeController extends Controller
 {
@@ -49,7 +50,8 @@ class HomeController extends Controller
     public function callback()
     {
         if ($this->wxData = WeOpen::getAuthorizerAccessToken($_GET['auth_code'])) {
-            return redirect()->route('/');
+            $token = JWTAuth::getToken();
+            return redirect()->route('home')->header('Authorization', 'Bearer ' . $token->get());
         }
     }
 

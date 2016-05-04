@@ -37,6 +37,7 @@ class SignUpFormRequest extends FormRequest
         ];
     }
 
+    // 存储入库，如果发现?findpass则更新密码
     public function persist()
     {
         if (isset($_GET['findpass'])) {
