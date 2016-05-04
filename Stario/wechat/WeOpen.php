@@ -57,8 +57,8 @@ class WeOpen
                 "component_verify_ticket" => $ticket
             ]]);
         $data = json_decode($result->getBody());
-        Cache::forever('wx_component_access_token', $data->{'component_access_token'});
-        Log::info('俺成功刷新了wx_component_access_token'.$data->{'component_access_token'});
+        Cache::forever('wx_component_access_token', $data->component_access_token);
+        Log::info('俺成功刷新了wx_component_access_token'.$data->component_access_token);
     }
 
     /**
@@ -74,10 +74,11 @@ class WeOpen
                     .$component_access_token;
         $result = self::$client->post($uri, ['json'=>["component_appid" => self::$appId]]);
         $data = json_decode($result->getBody());
-        if (empty($data->{'pre_auth_code'})) {
+        dd($data);
+        if (empty($data->pre_auth_code)) {
             self::getComponenAccessToken();
         }
-        $preAuthCode = $data->{'pre_auth_code'};
+        $preAuthCode = $data->pre_auth_code;
         Cache::forever('wx_preAuthCode', $preAuthCode);
         Log::info('俺获取了preAuthCode，已放进缓存');
         return $preAuthCode;
