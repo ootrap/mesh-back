@@ -75,6 +75,7 @@ class WeOpen
         $result = self::$client->post($uri, ['json'=>["component_appid" => self::$appId]]);
         $data = json_decode($result->getBody());
         if (empty($data->{'pre_auth_code'})) {
+            self::getComponentVerifyTicket();
             self::getComponenAccessToken();
         }
         $preAuthCode = $data->{'pre_auth_code'};
@@ -149,3 +150,4 @@ class WeOpen
     WeOpen::$secureKey  = config('wechat.secret');
     WeOpen::$token  = config('wechat.token');
     WeOpen::$aeskey = config('wechat.aes_key');
+    
