@@ -14,7 +14,7 @@ Route::group(['prefix' => 'api/auth', 'middleware'=>'throttle:60'], function () 
 
 Route::group(['prefix'=>'api/admin', 'middleware' => ['api']], function () {
     Route::get('mplist', 'HomeController@mplist');
-    Route::get('home', 'HomeController@index');
+    Route::get('home', ['as' => 'home', 'action' => 'HomeController@index']);
     Route::get('mps', 'UserController@mps');
 });
 
