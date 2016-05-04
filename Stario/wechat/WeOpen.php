@@ -74,7 +74,6 @@ class WeOpen
                     .$component_access_token;
         $result = self::$client->post($uri, ['json'=>["component_appid" => self::$appId]]);
         $data = json_decode($result->getBody());
-        dd($data);
         if (empty($data->pre_auth_code)) {
             self::getComponenAccessToken();
         }
