@@ -19,7 +19,7 @@ Route::group(['prefix'=>'api/admin', 'middleware' => ['api']], function () {
 });
 
 // 微信第三方平台
-Route::any('/auth', 'HomeController@auth');
+Route::any('/auth', 'WechatController@auth');
 Route::get('/callback', 'HomeController@callback');
 
 Route::get('/', function () {
